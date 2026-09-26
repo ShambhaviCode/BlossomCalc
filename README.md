@@ -1,5 +1,7 @@
 # BlossomCalc
 
+[![Tests](https://github.com/ShambhaviCode/BlossomCalc/actions/workflows/test.yml/badge.svg)](https://github.com/ShambhaviCode/BlossomCalc/actions/workflows/test.yml)
+
 A modern glassmorphism calculator built with HTML, CSS, and JavaScript featuring dark mode, keyboard support, calculation history, and a clean pastel user interface.
 
 ## Live Demo
