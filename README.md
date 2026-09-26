@@ -42,7 +42,10 @@ https://blossom-calc.vercel.app
 BlossomCalc/
 ├── index.html
 ├── style.css
-├── script.js
+├── script.js      # UI and keyboard handling
+├── evaluate.js    # safe arithmetic parser (no eval)
+├── test/
+│   └── evaluate.test.js
 └── README.md
 ```
 
@@ -55,6 +58,12 @@ git clone https://github.com/ShambhaviCode/BlossomCalc.git
 ```
 
 Open `index.html` in your browser.
+
+Run the tests (Node 18+, no dependencies):
+
+```bash
+node --test
+```
 
 ## Deployment
 

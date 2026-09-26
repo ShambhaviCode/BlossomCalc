@@ -1,6 +1,63 @@
 const display = document.getElementById("display");
 const history = document.getElementById("history");
 
+// True right after "=", so typing a number starts a fresh
+// calculation while typing an operator continues from the result.
+let justCalculated = false;
+
+function calculate(){
+
+if(!display.value || display.value === "Error"){
+return;
+}
+
+try{
+const result = evaluateExpression(display.value);
+
+history.textContent =
+`${display.value} = ${result}`;
+
+display.value = result;
+justCalculated = true;
+}
+catch{
+display.value = "Error";
+justCalculated = false;
+}
+}
+
+function input(value){
+
+if(display.value === "Error"){
+display.value = "";
+}
+
+if(justCalculated && !"+-*/".includes(value)){
+display.value = "";
+}
+
+justCalculated = false;
+display.value += value;
+}
+
+function backspace(){
+
+justCalculated = false;
+
+if(display.value === "Error"){
+display.value = "";
+return;
+}
+
+display.value =
+display.value.slice(0,-1);
+}
+
+function clearDisplay(){
+justCalculated = false;
+display.value = "";
+}
+
 document.querySelectorAll(".buttons button")
 .forEach(btn => {
 
@@ -9,62 +66,45 @@ btn.addEventListener("click", () => {
 const value = btn.textContent;
 
 if(value === "C"){
-display.value = "";
+clearDisplay();
 return;
 }
 
 if(value === "="){
-
-try{
-const result = eval(display.value);
-
-history.textContent =
-`${display.value} = ${result}`;
-
-display.value = result;
-}
-catch{
-display.value = "Error";
-}
-
+calculate();
 return;
 }
 
 if(value === "⌫"){
-display.value =
-display.value.slice(0,-1);
+backspace();
 return;
 }
 
-display.value += value;
+input(value);
 });
 });
 
 document.addEventListener("keydown",(e)=>{
 
-if(/[0-9+\-*/().]/.test(e.key)){
-display.value += e.key;
+if(/^[0-9+\-*/().]$/.test(e.key)){
+// "/" would otherwise open Firefox's quick find.
+e.preventDefault();
+input(e.key);
 }
 
 if(e.key==="Backspace"){
-display.value =
-display.value.slice(0,-1);
+backspace();
 }
 
-if(e.key==="Enter"){
-
-try{
-const result =
-eval(display.value);
-
-history.textContent =
-`${display.value} = ${result}`;
-
-display.value = result;
+if(e.key==="Escape"){
+clearDisplay();
 }
-catch{
-display.value="Error";
-}
+
+if(e.key==="Enter" || e.key==="="){
+// Without this, Enter also "clicks" whichever calculator
+// button has focus and appends it to the result.
+e.preventDefault();
+calculate();
 }
 });
 
